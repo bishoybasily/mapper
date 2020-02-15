@@ -20,3 +20,4 @@ spring:
     username: ${RABTMQ_USERNAME:root}
     password: ${RABTMQ_PASSWORD:toor}
     virtual-host: ${RABTMQ_VIRT_HOST:/}
+

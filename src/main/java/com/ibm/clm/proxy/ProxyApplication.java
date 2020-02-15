@@ -12,4 +12,19 @@ public class ProxyApplication {
 		SpringApplication.run(ProxyApplication.class, args);
 	}
 
+//	@Bean
+//	public CommandLineRunner runner(RabbitTemplate rabbitTemplate){
+//		return args -> {
+//
+//			rabbitTemplate.convertAndSend(
+//					Constants.EXCHANGE,
+//					Constants.CONSUME_ROUTING_KEY,
+//					new Content()
+//							.setUrl("http://checkip.amazonaws.com/")
+//							.setMethod(HttpMethod.GET)
+//			);
+//
+//		};
+//	}
+
 }
