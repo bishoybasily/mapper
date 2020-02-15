@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/java,linux,macos,maven,windows,eclipse,intellij,netbeans,intellij+all,intellij+iml,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=java,linux,macos,maven,windows,eclipse,intellij,netbeans,intellij+all,intellij+iml,visualstudiocode
+# Created by https://www.gitignore.io/api/java,linux,macos,maven,gradle,windows,eclipse,intellij,netbeans,intellij+all,intellij+iml,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=java,linux,macos,maven,gradle,windows,eclipse,intellij,netbeans,intellij+all,intellij+iml,visualstudiocode
 
 ### Eclipse ###
 .metadata
@@ -391,4 +391,22 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/java,linux,macos,maven,windows,eclipse,intellij,netbeans,intellij+all,intellij+iml,visualstudiocode
+### Gradle ###
+.gradle
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+### Gradle Patch ###
+**/build/
+
+# End of https://www.gitignore.io/api/java,linux,macos,maven,gradle,windows,eclipse,intellij,netbeans,intellij+all,intellij+iml,visualstudiocode
