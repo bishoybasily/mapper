@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+
+  rabbitmq-server:
+    container_name: rabbitmq-server
+    image: rabbitmq:3.8.2-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=toor
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"

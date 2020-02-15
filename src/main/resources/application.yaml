@@ -1,0 +1,22 @@
+spring:
+
+  jackson:
+    default-property-inclusion: non_empty
+    serialization:
+      write-empty-json-arrays: false
+      write-null-map-values: false
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    parser:
+      allow-non-numeric-numbers: true
+    mapper:
+      default-view-inclusion: false
+
+  rabbitmq:
+    host: ${RABTMQ_HOST:127.0.0.1}
+    port: ${RABTMQ_PORT:5672}
+    username: ${RABTMQ_USERNAME:root}
+    password: ${RABTMQ_PASSWORD:toor}
+    virtual-host: ${RABTMQ_VIRT_HOST:/}
