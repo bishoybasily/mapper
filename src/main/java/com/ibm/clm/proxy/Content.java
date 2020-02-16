@@ -7,9 +7,6 @@ import lombok.experimental.Accessors;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author bishoybasily
  * @since 2/15/20
@@ -23,7 +20,7 @@ public class Content {
     private String path;
     private LinkedMultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
     private LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-    private Map<String, Object> body = new HashMap<>();
+    private Object body;
     private HttpMethod method;
 
 }
