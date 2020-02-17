@@ -24,8 +24,7 @@ public class ControllerAny {
         rabbitTemplate.convertAndSend(
                 Constants.EXCHANGE,
                 Constants.PRODUCE_ROUTING_KEY,
-                contentExtractor
-                        .from(request)
+                contentExtractor.from(request)
                         .getContent()
         );
 

@@ -6,19 +6,22 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.ibm.clm</groupId>
     <artifactId>proxy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>proxy</name>
-    <description>Demo project for Spring Boot</description>
+    <description></description>
 
     <properties>
         <java.version>1.8</java.version>
+        <fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
+        <docker-maven-plugin.version>0.33.0</docker-maven-plugin.version>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
@@ -26,11 +29,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
         </dependency>
 
         <dependency>
@@ -51,11 +49,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit-test</artifactId>
             <scope>test</scope>
@@ -64,12 +57,124 @@
     </dependencies>
 
     <build>
+
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>start-external-resources</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-external-resources</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                            <goal>remove</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>rabbitmq:3.8.2</name>
+                            <alias>rabbitmq</alias>
+                            <run>
+                                <env>
+                                    <RABBITMQ_DEFAULT_USER>root</RABBITMQ_DEFAULT_USER>
+                                    <RABBITMQ_DEFAULT_PASS>toor</RABBITMQ_DEFAULT_PASS>
+                                </env>
+                                <ports>
+                                    <port>5672:5672</port>
+                                </ports>
+                                <wait>
+                                    <time>10000</time>
+                                </wait>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>k8s</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>fabric8-maven-plugin</artifactId>
+                        <version>${fabric8-maven-plugin.version}</version>
+                        <configuration>
+                            <namespace>development</namespace>
+                            <images>
+                                <image>
+                                    <name>${project.artifactId}:${project.version}</name>
+                                    <alias>demo-app</alias>
+                                    <build>
+                                        <from>openjdk:8-jre-alpine</from>
+                                        <assembly>
+                                            <descriptorRef>artifact</descriptorRef>
+                                        </assembly>
+                                        <ports>
+                                            <port>8080</port>
+                                        </ports>
+                                        <cmd>java -jar maven/${project.artifactId}-${project.version}.jar</cmd>
+                                    </build>
+                                    <run>
+                                        <ports>
+                                            <port>8080:8080</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                            </images>
+                            <resources>
+                                <env>
+                                    <SPRING_PROFILES_ACTIVE>k8s</SPRING_PROFILES_ACTIVE>
+                                </env>
+                            </resources>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>resource</goal>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

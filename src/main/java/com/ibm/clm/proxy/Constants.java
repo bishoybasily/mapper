@@ -6,6 +6,14 @@ package com.ibm.clm.proxy;
  */
 public interface Constants {
 
+    interface Profiles {
+
+        String
+                TEST = "test",
+                K8S = "k8s";
+
+    }
+
     String
             EXCHANGE = "_proxy",
             QUEUE = "_proxy",

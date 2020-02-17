@@ -77,7 +77,10 @@ public class ContentExtractor {
                                     return e.hasMoreElements();
                                 }
                             },
-                            Spliterator.ORDERED), false);
+                            Spliterator.ORDERED
+                    ),
+                    false
+            );
         }
 
         public Content getContent() {
