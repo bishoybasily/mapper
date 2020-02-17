@@ -88,18 +88,11 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="docker">
-                                    <arg value="run"/>
-                                    <arg value="--rm"/>
+                                <exec executable="docker-compose">
+                                    <arg value="-f"/>
+                                    <arg value="docker-compose/docker-compose.yaml"/>
+                                    <arg value="up"/>
                                     <arg value="-d"/>
-                                    <arg value="-p"/>
-                                    <arg value="5672:5672"/>
-                                    <arg value="-e"/>
-                                    <arg value="RABBITMQ_DEFAULT_USER=root"/>
-                                    <arg value="-e"/>
-                                    <arg value="RABBITMQ_DEFAULT_PASS=toor"/>
-                                    <arg value="--name=rabbitmq-server"/>
-                                    <arg value="rabbitmq:3.8.2"/>
                                 </exec>
                                 <sleep seconds="10"/>
                             </target>
@@ -113,9 +106,12 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="docker">
-                                    <arg value="stop"/>
-                                    <arg value="rabbitmq-server"/>
+                                <exec executable="docker-compose">
+                                    <arg value="-f"/>
+                                    <arg value="docker-compose/docker-compose.yaml"/>
+                                    <arg value="down"/>
+                                    <arg value="--rmi"/>
+                                    <arg value="all"/>
                                 </exec>
                                 <sleep seconds="1"/>
                             </target>
