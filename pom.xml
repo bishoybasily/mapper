@@ -17,7 +17,6 @@
     <properties>
         <java.version>1.8</java.version>
         <fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
-        <docker-maven-plugin.version>0.33.0</docker-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -57,7 +56,6 @@
     </dependencies>
 
     <build>
-
         <plugins>
 
             <plugin>
@@ -79,46 +77,51 @@
             </plugin>
 
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker-maven-plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>start-external-resources</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>start</goal>
+                            <goal>run</goal>
                         </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="docker">
+                                    <arg value="run"/>
+                                    <arg value="--rm"/>
+                                    <arg value="-d"/>
+                                    <arg value="-p"/>
+                                    <arg value="5672:5672"/>
+                                    <arg value="-e"/>
+                                    <arg value="RABBITMQ_DEFAULT_USER=root"/>
+                                    <arg value="-e"/>
+                                    <arg value="RABBITMQ_DEFAULT_PASS=toor"/>
+                                    <arg value="--name=rabbitmq-server"/>
+                                    <arg value="rabbitmq:3.8.2"/>
+                                </exec>
+                                <sleep seconds="10"/>
+                            </target>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>stop-external-resources</id>
                         <phase>post-integration-test</phase>
                         <goals>
-                            <goal>stop</goal>
-                            <goal>remove</goal>
+                            <goal>run</goal>
                         </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="docker">
+                                    <arg value="stop"/>
+                                    <arg value="rabbitmq-server"/>
+                                </exec>
+                                <sleep seconds="1"/>
+                            </target>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>rabbitmq:3.8.2</name>
-                            <alias>rabbitmq</alias>
-                            <run>
-                                <env>
-                                    <RABBITMQ_DEFAULT_USER>root</RABBITMQ_DEFAULT_USER>
-                                    <RABBITMQ_DEFAULT_PASS>toor</RABBITMQ_DEFAULT_PASS>
-                                </env>
-                                <ports>
-                                    <port>5672:5672</port>
-                                </ports>
-                                <wait>
-                                    <time>10000</time>
-                                </wait>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
             </plugin>
 
         </plugins>
@@ -138,7 +141,6 @@
                             <images>
                                 <image>
                                     <name>${project.artifactId}:${project.version}</name>
-                                    <alias>demo-app</alias>
                                     <build>
                                         <from>openjdk:8-jre-alpine</from>
                                         <assembly>
@@ -166,8 +168,8 @@
                             <execution>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>resource</goal>
                                     <goal>build</goal>
+                                    <goal>resource</goal>
                                 </goals>
                             </execution>
                         </executions>
