@@ -2,17 +2,18 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
         <relativePath/>
     </parent>
-    <groupId>com.ibm.clm</groupId>
-    <artifactId>proxy</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>proxy</name>
-    <description></description>
+
+    <groupId>com.gmail.bishoybasily</groupId>
+    <artifactId>mapper</artifactId>
+    <version>0.0.1</version>
+    <name>mapper</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -63,69 +64,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>start-external-resources</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <exec executable="docker-compose">
-                                    <arg value="-f"/>
-                                    <arg value="docker-compose/docker-compose.yaml"/>
-                                    <arg value="up"/>
-                                    <arg value="-d"/>
-                                </exec>
-                                <sleep seconds="10"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-external-resources</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <exec executable="docker-compose">
-                                    <arg value="-f"/>
-                                    <arg value="docker-compose/docker-compose.yaml"/>
-                                    <arg value="down"/>
-                                    <arg value="--rmi"/>
-                                    <arg value="all"/>
-                                </exec>
-                                <sleep seconds="1"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 
     <profiles>
         <profile>
-            <id>k8s</id>
+            <id>fabric8</id>
             <build>
                 <plugins>
                     <plugin>
@@ -165,7 +109,7 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>build</goal>
-                                    <goal>resource</goal>
+                                    <!--                                    <goal>resource</goal>-->
                                 </goals>
                             </execution>
                         </executions>

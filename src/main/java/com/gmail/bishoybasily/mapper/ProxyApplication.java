@@ -1,4 +1,4 @@
-package com.ibm.clm.proxy;
+package com.gmail.bishoybasily.mapper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.ibm.clm.proxy;
+package com.gmail.bishoybasily.mapper;
 
 /**
  * @author bishoybasily

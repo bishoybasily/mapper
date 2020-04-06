@@ -1,4 +1,4 @@
-package com.ibm.clm.proxy;
+package com.gmail.bishoybasily.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

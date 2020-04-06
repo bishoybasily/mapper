@@ -1,4 +1,4 @@
-package com.ibm.clm.proxy;
+package com.gmail.bishoybasily.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;

@@ -1,4 +1,4 @@
-package com.ibm.clm.proxy;
+package com.gmail.bishoybasily.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,15 @@ public class ContentExtractor {
 
         private final ObjectMapper objectMapper;
         private final HttpServletRequest request;
+
+        public Content getContent() {
+            return new Content()
+                    .setPath(getPath())
+                    .setHeaders(getHeaders())
+                    .setParameters(getParams())
+                    .setMethod(getMethod())
+                    .setBody(getBody());
+        }
 
         private String getPath() {
             return request.getServletPath();
@@ -81,15 +90,6 @@ public class ContentExtractor {
                     ),
                     false
             );
-        }
-
-        public Content getContent() {
-            return new Content()
-                    .setPath(getPath())
-                    .setHeaders(getHeaders())
-                    .setParameters(getParams())
-                    .setMethod(getMethod())
-                    .setBody(getBody());
         }
 
     }
